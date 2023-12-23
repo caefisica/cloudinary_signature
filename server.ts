@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express"
+import express, { Request, Response, NextFunction } from "express"
 import cors from "cors"
 import dotenv from "dotenv"
 import { generateSignature } from "./utils"
@@ -6,7 +6,11 @@ import configureCloudinary from "./config"
 
 dotenv.config()
 
-if (!process.env.PORT || !process.env.CLOUDINARY_CLOUD_NAME) {
+if (
+  !process.env.PORT ||
+  !process.env.CLOUDINARY_CLOUD_NAME ||
+  !process.env.API_AUTH_TOKEN
+) {
   console.error("Required environment variables are missing.")
   process.exit(1)
 }
@@ -17,6 +21,18 @@ const app = express()
 
 app.use(cors())
 app.use(express.json())
+
+const validateToken = (req: Request, res: Response, next: NextFunction) => {
+  const token = req.headers["x-api-token"]
+
+  if (!token || token !== process.env.API_AUTH_TOKEN) {
+    return res.status(403).json({ error: "Access denied, invalid token" })
+  }
+
+  next()
+}
+
+app.use(validateToken)
 
 app.post("/api/sign", async (req: Request, res: Response) => {
   const folderName: string = req.body.folder
