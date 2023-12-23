@@ -1,10 +1,15 @@
 import { v2 as cloudinary } from "cloudinary"
 
 const configureCloudinary = () => {
-  if (!process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_SECRET) {
-    throw new Error(
-      "La configuración de Cloudinary (keys y secretos) no está definida.",
-    )
+  const requiredConfig = [
+    "CLOUDINARY_API_KEY",
+    "CLOUDINARY_SECRET",
+    "CLOUDINARY_CLOUD_NAME",
+  ]
+  for (const configKey of requiredConfig) {
+    if (!process.env[configKey]) {
+      throw new Error(`Missing Cloudinary configuration: ${configKey}`)
+    }
   }
 
   const config = {
