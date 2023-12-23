@@ -2,7 +2,7 @@ import { v2 as cloudinary } from "cloudinary";
 
 const configureCloudinary = () => {
   if (!process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_SECRET) {
-    throw new Error("Cloudinary configuration is incomplete.");
+    throw new Error("La configuración de Cloudinary (keys y secretos) no está definida.");
   }
 
   const config = {
