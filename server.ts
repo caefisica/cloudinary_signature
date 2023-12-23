@@ -1,9 +1,12 @@
 import express, { Request, Response } from "express"
 import cors from "cors"
 import dotenv from "dotenv"
-import { generateSignature } from "./utils/cloudinaryUtils"
+import { generateSignature } from "./utils"
+import configureCloudinary from "./config"
 
 dotenv.config()
+configureCloudinary()
+
 const app = express()
 
 app.use(cors())
@@ -23,6 +26,8 @@ app.post("/api/sign", async (req: Request, res: Response) => {
 })
 
 const PORT = process.env.PORT || 3000
-app.listen(PORT, () =>
+const server = app.listen(PORT, () =>
   console.log(`El servidor se está ejecutando en el puerto ${PORT}`),
 )
+
+export { app, server }
