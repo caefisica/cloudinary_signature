@@ -9,8 +9,8 @@
     "test": "jest"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "David Duran <david@caefisica.com>",
+  "license": "MIT",
   "dependencies": {
     "@types/supertest": "^6.0.1",
     "cloudinary": "^1.41.1",
